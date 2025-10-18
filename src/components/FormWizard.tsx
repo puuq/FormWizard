@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Step1_Name from "./steps/Step1_Name"
+import Step2_Bio from "./steps/Step2_Bio"
 
 export default function FormWizard() {
   const [step, setStep] = useState(0)
@@ -27,24 +28,15 @@ export default function FormWizard() {
         )}
 
         {step === 1 && (
-          <div>
-            <p className="text-gray-500 mb-2">Step 2: Write a short bio</p>
-            <div className="flex gap-4">
-              <button
-                onClick={prevStep}
-                className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
-              >
-                Back
-              </button>
-              <button
-                onClick={nextStep}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Next
-              </button>
-            </div>
-          </div>
+        <Step2_Bio
+            onBack={prevStep}
+            onNext={(data) => {
+            console.log("From FormWizard (Bio):", data)
+            nextStep()
+            }}
+        />
         )}
+
         {step === 2 && (
           <div>
             <p className="text-gray-500 mb-2">Step 3: Preferences</p>
