@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Step1_Name from "./steps/Step1_Name"
 import Step2_Bio from "./steps/Step2_Bio"
+import Step3_Preferences from "./steps/Step3_Preferences"
 
 export default function FormWizard() {
   const [step, setStep] = useState(0)
@@ -38,16 +39,15 @@ export default function FormWizard() {
         )}
 
         {step === 2 && (
-          <div>
-            <p className="text-gray-500 mb-2">Step 3: Preferences</p>
-            <button
-              onClick={prevStep}
-              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
-            >
-              Back
-            </button>
-          </div>
+        <Step3_Preferences
+            onBack={prevStep}
+            onNext={(data) => {
+            console.log("From FormWizard (Preferences):", data)
+            // Maybe show summary or modal here
+            }}
+        />
         )}
+
       </div>
     </div>
   )
