@@ -1,54 +1,60 @@
 'use client'
 
 import { useState } from "react"
-import Step1_Name from "./steps/Step1_Name"
-import Step2_Bio from "./steps/Step2_Bio"
-import Step3_Preferences from "./steps/Step3_Preferences"
+import Step1_Name from "@/components/steps/Step1_Name"
+import Step2_Bio from "@/components/steps/Step2_Bio"
+import Step3_Preferences from "@/components/steps/Step3_Preferences"
+
+type WizardData = {
+  name?: string
+  bio?: string
+  preference?: "frontend" | "backend" | "fullstack"
+}
 
 export default function FormWizard() {
   const [step, setStep] = useState(0)
+  const [formData, setFormData] = useState<WizardData>({})
 
-  const nextStep = () => setStep((prev) => prev + 1)
-  const prevStep = () => setStep((prev) => Math.max(0, prev - 1))
+  const totalSteps = 3
 
-  const totalSteps = 3 // Adjust as more steps are added
+  const nextStep = () => setStep((s) => s + 1)
+  const prevStep = () => setStep((s) => Math.max(0, s - 1))
+
+  const updateData = (data: Partial<WizardData>) => {
+    setFormData((prev) => ({ ...prev, ...data }))
+    nextStep()
+  }
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 border rounded-lg shadow space-y-6">
       <h2 className="text-2xl font-semibold">Step {step + 1} of {totalSteps}</h2>
 
-      {/* Render the current step here */}
-      <div>
-        {step === 0 && (
+      {step === 0 && (
         <Step1_Name
-            onNext={(data) => {
-            console.log("From FormWizard:", data)
-            nextStep()
-            }}
+          onNext={(data) => updateData(data)}
         />
-        )}
+      )}
 
-        {step === 1 && (
+      {step === 1 && (
         <Step2_Bio
-            onBack={prevStep}
-            onNext={(data) => {
-            console.log("From FormWizard (Bio):", data)
-            nextStep()
-            }}
+          onBack={prevStep}
+          onNext={(data) => updateData(data)}
         />
-        )}
+      )}
 
-        {step === 2 && (
+      {step === 2 && (
         <Step3_Preferences
-            onBack={prevStep}
-            onNext={(data) => {
-            console.log("From FormWizard (Preferences):", data)
-            // Maybe show summary or modal here
-            }}
+          onBack={prevStep}
+          onNext={(data) => {
+            updateData(data)
+            console.log("🧾 Final Form Data:", {
+              ...formData,
+              ...data,
+            })
+            // 🔜 You can show a review screen or send to API here
+          }}
         />
-        )}
-
-      </div>
+      )}
     </div>
   )
 }
