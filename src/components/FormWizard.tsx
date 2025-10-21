@@ -27,7 +27,9 @@ export default function FormWizard() {
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 border rounded-lg shadow space-y-6">
-      <h2 className="text-2xl font-semibold">Step {step + 1} of {totalSteps}</h2>
+      <h2 className="text-2xl font-semibold">
+        Step {Math.min(step + 1, totalSteps)} of {totalSteps}
+      </h2>
 
       {step === 0 && (
         <Step1_Name
